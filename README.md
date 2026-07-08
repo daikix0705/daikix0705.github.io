@@ -1,0 +1,1 @@
+# daikix0705.github.io
