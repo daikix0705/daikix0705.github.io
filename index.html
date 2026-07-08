@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>灘校84回生＋αグループ Discordサーバー紹介</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --accent-blue: #2563eb;
+            --accent-hover: #1d4ed8;
+            --btn-secondary: #e2e8f0;
+            --btn-secondary-hover: #cbd5e1;
+            --border-color: #cbd5e1;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            padding: 60px 4%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .full-width-container {
+            width: 100%;
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        /* ページの切り替え管理 */
+        .page {
+            display: none;
+            width: 100%;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* ヘッダー */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: rgba(37, 99, 235, 0.08);
+            color: var(--accent-blue);
+            font-size: 13px;
+            font-weight: 700;
+            padding: 6px 16px;
+            border-radius: 50px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 44px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+        }
+
+        .subtitle {
+            color: var(--text-sub);
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        /* ボタンエリア（サイズ一元化） */
+        .hero-cta {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 60px;
+            width: 100%;
+        }
+
+        .btn-base {
+            display: inline-block;
+            width: 100%;
+            max-width: 400px;
+            height: 56px;
+            line-height: 56px;
+            text-align: center;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 18px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+
+        .btn-base:hover {
+            transform: scale(1.03); 
+        }
+
+        .btn-join {
+            background-color: var(--accent-blue);
+            color: white;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-join:hover {
+            background-color: var(--accent-hover);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-rules {
+            background-color: var(--btn-secondary);
+            color: var(--text-main);
+        }
+
+        .btn-rules:hover {
+            background-color: var(--btn-secondary-hover);
+        }
+
+        /* 見出し（左右ライン） */
+        h2 {
+            font-size: 22px;
+            color: var(--text-main);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-weight: 700;
+            width: 100%;
+        }
+
+        h2::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background-color: var(--border-color);
+        }
+
+        section {
+            margin-bottom: 60px;
+            width: 100%;
+        }
+
+        /* お知らせ一覧 */
+        .news-list {
+            list-style: none;
+            width: 100%;
+        }
+
+        .news-item {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 16px;
+            display: flex;
+            gap: 30px;
+        }
+
+        .news-date {
+            font-weight: 700;
+            color: var(--accent-blue);
+            white-space: nowrap;
+        }
+
+        /* よくあるご質問 */
+        .faq-details {
+            border-bottom: 1px solid var(--border-color);
+            width: 100%;
+        }
+
+        .faq-summary {
+            padding: 20px 0;
+            font-weight: 600;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            font-size: 17px;
+        }
+
+        .faq-summary::after {
+            content: "＋";
+            font-size: 16px;
+            color: var(--text-sub);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-details[open] .faq-summary::after {
+            transform: rotate(45deg);
+            color: var(--accent-blue);
+        }
+
+        .faq-content {
+            padding: 0 0 20px 0;
+            color: var(--text-sub);
+            font-size: 15px;
+            line-height: 1.7;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        /* タブ切り替え */
+        .tab-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-color);
+            width: 100%;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            top: 2px;
+        }
+
+        .tab-btn:hover { color: var(--accent-blue); }
+        .tab-btn.active {
+            color: var(--accent-blue);
+            border-bottom: 3px solid var(--accent-blue);
+        }
+
+        /* 条文デザイン */
+        .article {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            width: 100%;
+        }
+
+        .article-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        .article-body {
+            font-size: 15px;
+            color: var(--text-sub);
+            line-height: 1.7;
+            padding-left: 10px;
+        }
+
+        .bullet-list {
+            list-style: none;
+            margin-top: 8px;
+            padding-left: 10px;
+        }
+
+        .bullet-list li {
+            margin-bottom: 6px;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .bullet-list li::before {
+            content: "■";
+            position: absolute;
+            left: 0;
+            color: var(--accent-blue);
+            font-size: 12px;
+            top: 2px;
+        }
+
+        /* 戻るボタン */
+        .btn-back {
+            background-color: var(--text-main);
+            color: white;
+            margin-bottom: 40px;
+            max-width: 200px;
+            height: 46px;
+            line-height: 46px;
+            font-size: 15px;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 32px; }
+            .btn-base { max-width: 100%; }
+            .news-item { flex-direction: column; gap: 4px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="full-width-container">
+
+    <div id="main-page" class="page active">
+        <header class="header">
+            <span class="badge">Discord Community</span>
+            <h1>灘校84回生＋αグループ</h1>
+            <p class="subtitle">同級生同士の気軽な雑談から、他学年・外部メンバーとの繋がりまで。心地よく広がるオンライン空間。</p>
+        </header>
+
+        <div class="hero-cta">
+            <a href="https://discord.gg/HR9VxhX3Vx" class="btn-base btn-join" target="_blank">サーバーに参加する</a>
+            <button class="btn-base btn-rules" onclick="navigateTo('rules-page')">サーバールールを読む</button>
+        </div>
+
+        <section>
+            <h2>お知らせ</h2>
+            <ul class="news-list">
+                <li class="news-item">
+                    <span class="news-date">2026.07.01</span>
+                    <span class="news-title">サーバーの利用規約を改定しました。「サーバールールを読む」よりご確認ください。</span>
+                </li>
+                <li class="news-item">
+                    <span class="news-date">2026.05.15</span>
+                    <span class="news-title">定期試験・模試対策用の共有チャンネルが開開設されました。</span>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>よくあるご質問</h2>
+            <div class="faq-accordion">
+                
+                <details class="faq-details">
+                    <summary class="faq-summary">84回生以外でも参加できますか？</summary>
+                    <div class="faq-content">
+                        はい、大歓迎です！「＋α」として、他学年の生徒や関係者、招待された外部の方も多く参加しています。
+                    </div>
+                </details>
+
+                <details class="faq-details">
+                    <summary class="faq-summary">見るだけ（聞き専）での参加は可能ですか？</summary>
+                    <div class="faq-content">
+                        まったく問題ありません。チャットを眺めるだけ、情報収集のためだけのライトな利用も歓迎しています。
+                    </div>
+                </details>
+
+                <details class="faq-details">
+                    <summary class="faq-summary">本名を出す必要はありますか？</summary>
+                    <div class="faq-content">
+                        いいえ、ニックネームでご参加いただけます。ただし、サーバー内のルール（自己紹介等）がある場合はそちらに従ってください。
+                    </div>
+                </details>
+
+            </div>
+        </section>
+    </div>
+
+
+    <div id="rules-page" class="page">
+        <button class="btn-base btn-back" onclick="navigateTo('main-page')">← トップに戻る</button>
+
+        <h2>利用規約 ＆ プライバシーポリシー</h2>
+
+        <div class="tab-group">
+            <button class="tab-btn active" onclick="switchTab('terms')">利用規約</button>
+            <button class="tab-btn" onclick="switchTab('privacy')">プライバシーポリシー</button>
+        </div>
+
+        <div id="terms" class="page active">
+            <div class="article">
+                <div class="article-title">第1条 (目的)</div>
+                <div class="article-body">本規約は、同一の教育機関に籍を置くメンバー間において、安全かつ健全な相互交流の場を構築・維持することを目的とします。</div>
+            </div>
+
+            <div class="article">
+                <div class="article-title">第2条 (参加資格)</div>
+                <div class="article-body">本サーバーへの参加権は、灘中学校および灘高等学校の在籍生徒のみに付与されます。</div>
+            </div>
+
+            <div class="article">
+                <div class="article-title">第3条 (禁止事項)</div>
+                <div class="article-body">
+                    全てのメンバーは、以下に該当する行為 (以下「禁止行為」) を行ってはなりません。
+                    <ul class="bullet-list">
+                        <li><strong>誹謗中傷：</strong>他メンバーに対する名誉毀損、侮辱、不適切な批判</li>
+                        <li><strong>過度な連投：</strong>サーバー負荷を与えるスパム行為（※「連投系むほーちたい」は適用除外）</li>
+                        <li><strong>不法行為：</strong>公序良俗に反する行為、および法令に違反する行為（※「むほーちたい」「連投系むほーちたい」は適用除外）</li>
+                        <li><strong>システム濫用：</strong>botの悪用、荒らし行為、およびアカウントのなりすまし</li>
+                        <li><strong>その他：</strong>総意としてメンバーの多数が不適切と判断した行為</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-title">第4条（管理者の権限と制限）</div>
+                <div class="article-body">
+                    <ul class="bullet-list">
+                        <li><strong>基本職務：</strong>管理者は、サーバーの運営、チャンネルの統括、および荒らし行為への対処を担います。</li>
+                        <li><strong>権限の制限：</strong>管理者は、その単独の裁量によって重大な決定（BAN、キック等）を下すことはできません。</li>
+                        <li><strong>不服申し立て：</strong>管理者の裁定に不服がある場合、メンバーは1回に限り再審議を要求できます。</li>
+                        <li><strong>人選の合意：</strong>管理者の追加および交代は、全メンバーの2/3以上の賛成を必要とします。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-title">第5条（退会および処分プロセス）</div>
+                <div class="article-body">
+                    <ul class="bullet-list">
+                        <li><strong>自由退会：</strong>メンバーは、自己の意思によりいつでも自由に退会できます。</li>
+                        <li><strong>警告措置：</strong>規約違反の疑いが生じた場合、1回目については、管理者は該当者に警告を行い、専用ロールを付与します（ロールが付与された場合、該当者は一部機能を制限されます）。2回目以降に関してはキック・BAN・タイムアウトなどの処分が下される可能性があります。</li>
+                        <li><strong>厳罰処分：</strong>キック・BAN・タイムアウト処分はメンバー投票によって決議され、2/3以上の賛成を要します。</li>
+                        <li><strong>緊急避難：</strong>明白な荒らし等の緊急事態に限り、管理者は一時的な暫定BANまたはタイムアウトを実行できます。ただし、実行後24時間以内に正規のメンバー投票へ移行しなければなりません。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-title">第6条（運用の透明性）</div>
+                <div class="article-body">
+                    <ul class="bullet-list">
+                        <li><strong>開示義務：</strong>管理者は、警告、BAN、規約変更等の重要決定事項を、必ず全メンバーへ即座に開示します。</li>
+                        <li><strong>投票の公開：</strong>全投票プロセスは可視化された環境で実施され、その結果は全てログとして公開されます。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-title">第7条（規約の改定）</div>
+                <div class="article-body">
+                    <ul class="bullet-list">
+                        <li><strong>発議：</strong>本規約の改定案は、メンバーまたは管理者の提案により発議されます。</li>
+                        <li><strong>可決条件：</strong>改定の成立には、全メンバーの過半数の賛成を必要とします。</li>
+                        <li><strong>効力発生：</strong>承認された改定案は、グループ内に掲示された瞬間から即時発効します。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="privacy" class="page">
+            <div class="article">
+                <div class="article-title">第1条（個人情報の利用目的）</div>
+                <div class="article-body">
+                    取得した個人情報は、以下の目的の範囲内でのみ厳格に運用します。
+                    <ul class="bullet-list">
+                        <li>識別照合（本人確認および参加資格の認証）</li>
+                        <li>案内告知（イベント告知および交流サポート）</li>
+                        <li>業務連絡（管理者からの重要通知）</li>
+                        <li>防衛措置（荒らしアカウントへの対策）</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-title">第2条（第三者提供の制限）</div>
+                <div class="article-body">法令に基づく正当な要請がある場合を除き、本人の同意なく個人情報を第三者に開示・提供することはありません。</div>
+            </div>
+
+            <div class="article">
+                <div class="article-title">第3条（情報の管理と秘匿義務）</div>
+                <div class="article-body">
+                    <ul class="bullet-list">
+                        <li><strong>適切管理：</strong>管理者は、保有する個人情報を適切かつ安全に管理します。</li>
+                        <li><strong>漏洩禁止：</strong>全メンバーは、他者の個人情報をいかなる方法であっても外部に漏洩させてはなりません。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="article">
+                <div class="article-title">第4条（相談・通報窓口）</div>
+                <div class="article-body">個人情報の取り扱いに関する相談、または不審な挙動を検知した場合は、速やかに管理者まで一報を寄せてください。</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function navigateTo(pageId) {
+        document.getElementById('main-page').classList.remove('active');
+        document.getElementById('rules-page').classList.remove('active');
+        document.getElementById(pageId).classList.add('active');
+        window.scrollTo(0, 0);
+    }
+
+    function switchTab(tabId) {
+        document.getElementById('terms').classList.remove('active');
+        document.getElementById('privacy').classList.remove('active');
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
